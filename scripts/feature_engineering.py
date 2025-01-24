@@ -6,7 +6,7 @@ def load_data():
     """
     Load the cleaned dataset from the processed folder.
     """
-    data_path = "../data/processed/cleaned_data.csv"
+    data_path = "/Users/mulsewsmba/Downloads/WK-6 Credit Scoring /data/processed/cleaned_data.csv"
     data = pd.read_csv(data_path)
     return data
 
@@ -48,7 +48,7 @@ def encode_categorical_variables(data):
     Encode categorical variables using One-Hot Encoding or Label Encoding.
     """
     # One-Hot Encoding for ProductCategory
-    one_hot_encoder = OneHotEncoder(sparse=False, drop='first')
+    one_hot_encoder = OneHotEncoder(sparse_output=False, drop='first')
     product_category_encoded = one_hot_encoder.fit_transform(data[['ProductCategory']])
     product_category_encoded_df = pd.DataFrame(
         product_category_encoded,
@@ -71,15 +71,14 @@ def handle_missing_values(data):
     # Fill missing numerical values with the median
     numerical_features = data.select_dtypes(include=['int64', 'float64']).columns
     for col in numerical_features:
-        data[col].fillna(data[col].median(), inplace=True)
+        data[col] = data[col].fillna(data[col].median())  # Updated to avoid chained assignment
 
     # Fill missing categorical values with the mode
     categorical_features = data.select_dtypes(include=['object']).columns
     for col in categorical_features:
-        data[col].fillna(data[col].mode()[0], inplace=True)
+        data[col] = data[col].fillna(data[col].mode()[0])  # Updated to avoid chained assignment
 
     return data
-
 def normalize_numerical_features(data):
     """
     Normalize/Standardize numerical features.
@@ -92,13 +91,13 @@ def normalize_numerical_features(data):
 
     return data
 
-def save_processed_data(data):
+def save_cleaned_data(data):
     """
     Save the processed dataset to the processed folder.
     """
-    processed_data_path = "../data/processed/processed_data.csv"
-    data.to_csv(processed_data_path, index=False)
-    print(f"Processed data saved to {processed_data_path}")
+    cleaned_data_path = "/Users/mulsewsmba/Downloads/WK-6 Credit Scoring /data/processed/cleaned_data.csv"
+    data.to_csv(cleaned_data_path, index=False)
+    print(f"Processed data saved to {cleaned_data_path}")
 
 def main():
     """
@@ -126,7 +125,7 @@ def main():
     data = normalize_numerical_features(data)
 
     # Save the processed data
-    save_processed_data(data)
+    save_cleaned_data(data)
 
 if __name__ == "__main__":
     main()
