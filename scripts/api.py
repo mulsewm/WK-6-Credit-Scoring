@@ -11,12 +11,9 @@ app = Flask(__name__)
 MODEL_PATH = "./models/RandomForest.pkl"  # or "LogisticRegression.pkl"
 model = joblib.load(MODEL_PATH)
 
-@app.route("/ping", methods=["GET"])
-def ping():
-    """
-    Health check endpoint.
-    """
-    return jsonify({"message": "API is alive!"})
+@app.route("/", methods=["GET"])
+def home():
+    return "Welcome to the API!"
 
 @app.route("/predict", methods=["POST"])
 def predict():
@@ -52,4 +49,4 @@ def predict():
 
 if __name__ == "__main__":
     # Run Flask server
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=8000, debug=True)
